@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3Rpa8OkeXR0w6Rqw6QiLCJpZCI6IjY1MWU5MTllZWNjYmQ2ZDRjNzg0ZmU0OCIsImlhdCI6MTY5NjUxMzQxNX0.L5knWePdQab0VpL6zqtO7RZYvTEquG2wn6AUP-BQruo
+
+{
+    "title": "jotain",
+    "author": "kirjoittaja",
+    "url": "jotainjotain.com",
+    "likes": 42,
+    "userId": "651e919eeccbd6d4c784fe48"
+}
