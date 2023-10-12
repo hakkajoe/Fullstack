@@ -5,3 +5,6 @@
 /osa2/puhelinluettelo/node_modules
 /osa4/node_modules
 /osa4/.env
+/osa5/Backend/.env
+/osa5/Backend/node_modules
+/osa5/Frontend/node_modules
