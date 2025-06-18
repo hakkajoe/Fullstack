@@ -1,20 +1,15 @@
-import { getId } from '../reducers/anecdoteReducer'
 import { useDispatch } from 'react-redux'
+import { addAnecdote } from '../reducers/anecdoteSlice'
+import { showNotification } from '../reducers/notificationSlice'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
   const addNote = (event) => {
     event.preventDefault()
     const content = event.target.note.value
+    dispatch(addAnecdote(content))
+    dispatch(showNotification(`you added '${content}'`))
     event.target.note.value = ''
-    dispatch({
-      type: 'NEW_NOTE',
-      payload: {
-        content,
-        id: getId(),
-        votes: 0
-      }
-    })
   }
 
   return (
