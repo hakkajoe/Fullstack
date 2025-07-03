@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { likeBlog } from '../reducers/blogsSlice'
+import { likeBlog, addCommentToBlog } from '../reducers/blogsSlice'
 
 const BlogDetails = () => {
   const { id } = useParams()
@@ -9,6 +9,7 @@ const BlogDetails = () => {
   const dispatch = useDispatch()
   const blogs = useSelector((state) => state.blogs)
   const [isReady, setIsReady] = useState(false)
+  const [comment, setComment] = useState('')
 
   useEffect(() => {
     if (blogs.length > 0) {
@@ -22,6 +23,13 @@ const BlogDetails = () => {
 
   const handleLike = () => {
     dispatch(likeBlog(blog))
+  }
+
+  const handleAddComment = (e) => {
+    e.preventDefault()
+    if (!comment.trim()) return
+    dispatch(addCommentToBlog(blog.id, comment.trim()))
+    setComment('')
   }
 
   return (
@@ -41,6 +49,22 @@ const BlogDetails = () => {
         </button>
       </div>
       <div>added by {blog.user.name}</div>
+      <h3>comments</h3>
+      <form onSubmit={handleAddComment} style={{ marginBottom: '1em' }}>
+        <input
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="Write a comment"
+        />
+        <button type="submit">add comment</button>
+      </form>
+      <ul>
+        {blog.comments && blog.comments.length > 0 ? (
+          blog.comments.map((c, i) => <li key={i}>{c}</li>)
+        ) : (
+          <div>No comments yet</div>
+        )}
+      </ul>
       <button onClick={() => navigate(-1)} style={{ marginBottom: '1em' }}>
         Back
       </button>

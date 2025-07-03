@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { Container, Form, Button } from 'react-bootstrap'
 import { showNotification } from './reducers/notificationSlice'
 import {
   initializeBlogs,
@@ -19,6 +20,7 @@ import UserDetails from './components/UserDetails'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Notification = () => {
   const notification = useSelector((state) => state.notification)
@@ -123,53 +125,47 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
-        <h2>Log in to application</h2>
+      <Container className="mt-5">
+        <h2 className="mb-4">Log in to application</h2>
         <Notification />
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id="username"
+        <Form onSubmit={handleLogin}>
+          <Form.Group className="mb-3" controlId="username">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
               type="text"
               value={username}
-              name="Username"
               onChange={({ target }) => setUsername(target.value)}
             />
-          </div>
-          <div>
-            password
-            <input
-              id="password"
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
               type="password"
               value={password}
-              name="Password"
               onChange={({ target }) => setPassword(target.value)}
             />
-          </div>
-          <button id="login" type="submit">
-            login
-          </button>
-        </form>
-      </div>
+          </Form.Group>
+          <Button id="login" type="submit" variant="primary">
+            Login
+          </Button>
+        </Form>
+      </Container>
     )
   }
 
   return (
     <Router>
-      <div>
-        <Navigation user={user} handleLogout={handleLogout} />
-        <h2>blog app</h2>
-        <div>
-          <Notification />
-        </div>
+      <Navigation user={user} handleLogout={handleLogout} />
+      <Container className="mt-4">
+        <h2 className="mb-4">blog app</h2>
+        <Notification />
         <Routes>
           <Route
             path="/"
             element={
               <div>
-                <div>{blogForm()}</div>
-                <div>
+                {blogForm()}
+                <div className="mt-4">
                   {blogs
                     .slice()
                     .sort((a, b) => b.likes - a.likes)
@@ -179,9 +175,6 @@ const App = () => {
                         {blog.author}
                       </div>
                     ))}
-                </div>
-                <div style={{ marginTop: '1.5em' }}>
-                  <Link to="/users">users</Link>
                 </div>
               </div>
             }
@@ -193,7 +186,7 @@ const App = () => {
           <Route path="/users/:id" element={<UserDetails />} />
           <Route path="/blogs/:id" element={<BlogDetails />} />
         </Routes>
-      </div>
+      </Container>
     </Router>
   )
 }
@@ -203,7 +196,9 @@ const blogStyle = {
   paddingLeft: 2,
   border: 'solid',
   borderWidth: 1,
-  marginBottom: 5,
+  borderRadius: 4,
+  marginBottom: 8,
+  padding: 8,
 }
 
 export default App

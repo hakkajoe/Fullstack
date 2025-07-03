@@ -46,6 +46,34 @@ blogsRouter.post(
   }
 )
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { comment } = request.body
+
+  if (!comment || comment.trim() === '') {
+    return response.status(400).json({ error: 'comment cannot be empty' })
+  }
+
+  const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    return response.status(404).json({ error: 'blog not found' })
+  }
+
+  blog.comments.push(comment.trim())
+  await blog.save()
+
+  const populatedBlog = await Blog.findById(request.params.id).populate(
+    'user',
+    {
+      username: 1,
+      name: 1,
+      id: 1,
+    }
+  )
+
+  response.status(201).json(populatedBlog)
+})
+
 blogsRouter.delete(
   '/:id',
   tokenExtractor,
